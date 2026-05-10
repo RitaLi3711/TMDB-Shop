@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ButtonGroup, ImageGrid, Pagination } from "@/components";
-import { IMAGE_BASE_URL, type TelevisionResponse, TV_ENDPOINT } from "@/core";
+import { getImageUrl, type ImageCell, type TelevisionResponse, TV_ENDPOINT } from "@/core";
 import { useTmdb } from "@/hooks";
 
 export const TelevisionView = () => {
@@ -10,12 +10,16 @@ export const TelevisionView = () => {
   const [page, setPage] = useState(1);
   const category = interval ?? "airing_today";
 
-  const { data } = useTmdb<TelevisionResponse>(`${TV_ENDPOINT}/${category}`, { page }, [category, page]);
+  const { data } = useTmdb<TelevisionResponse>(`${TV_ENDPOINT}/${category}`, { page });
 
-  if (!data) return <p className="text-center text-gray-400">Loading...</p>;
+  const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
+    id: result.id,
+    imageUrl: getImageUrl(result.poster_path ?? ""),
+    primaryText: result.name || result.original_name || "",
+  }));
 
   return (
-    <section className="mx-auto max-w-[1600px] space-y-5 p-5">
+    <section className="mx-auto max-w-400 space-y-5 p-5">
       <ButtonGroup
         onClick={(value) => {
           setPage(1);
@@ -29,15 +33,14 @@ export const TelevisionView = () => {
         ]}
         value={category}
       />
-      <ImageGrid
-        onClick={(id) => navigate(`/tv/${id}`)}
-        results={data.results.map((result) => ({
-          id: result.id,
-          imageUrl: `${IMAGE_BASE_URL}${result.poster_path ?? ""}`,
-          primaryText: result.name || result.original_name || "",
-        }))}
-      />
-      <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
+      {!data ? (
+        <p className="text-center text-gray-400">Loading...</p>
+      ) : (
+        <>
+          <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/tv/${image.id}`)} />
+          <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
+        </>
+      )}
     </section>
   );
 };
