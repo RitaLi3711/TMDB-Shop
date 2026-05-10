@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, ButtonGroup, ImageGrid, Pagination } from "@/components";
-import { GENRE_ENDPOINT, type GenreResponse, IMAGE_BASE_URL, movieGenres, tvGenres } from "@/core";
+import { GENRE_ENDPOINT, type GenreResponse, getImageUrl, type ImageCell, movieGenres, tvGenres } from "@/core";
 import { useTmdb } from "@/hooks";
 
 export const GenreView = () => {
@@ -13,18 +13,16 @@ export const GenreView = () => {
   const genres = type === "movies" ? movieGenres : tvGenres;
   const selectedGenre = genres.find((g) => g.slug === genreSlug)?.value ?? genres[0].value;
 
-  const { data } = useTmdb<GenreResponse>(`${GENRE_ENDPOINT}/${type === "movies" ? "movie" : "tv"}`, { page, with_genres: selectedGenre }, [
-    type,
-    selectedGenre,
-    page,
-  ]);
+  const { data } = useTmdb<GenreResponse>(`${GENRE_ENDPOINT}/${type === "movies" ? "movie" : "tv"}`, { page, with_genres: selectedGenre });
 
-  if (!data) {
-    return <p className="text-center text-gray-400">Loading genres...</p>;
-  }
+  const gridData: ImageCell[] = (data?.results ?? []).map((item) => ({
+    id: item.id,
+    imageUrl: getImageUrl(item.poster_path ?? ""),
+    primaryText: item.title || item.name || "",
+  }));
 
   return (
-    <section className="mx-auto max-w-[1600px] space-y-5 p-5">
+    <section className="mx-auto max-w-400 space-y-5 p-5">
       <ButtonGroup
         onClick={(value) => {
           const newType = value as "movies" | "tv";
@@ -55,16 +53,15 @@ export const GenreView = () => {
         ))}
       </div>
 
-      <ImageGrid
-        onClick={(id) => navigate(`/${type === "movies" ? "movie" : "tv"}/${id}`)}
-        results={(data.results || []).map((item) => ({
-          id: item.id,
-          imageUrl: `${IMAGE_BASE_URL}${item.poster_path ?? ""}`,
-          primaryText: item.title || item.name || "",
-        }))}
-      />
+      {!data ? (
+        <p className="text-center text-gray-400">Loading genres...</p>
+      ) : (
+        <>
+          <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} />
 
-      <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
+          <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
+        </>
+      )}
     </section>
   );
 };
