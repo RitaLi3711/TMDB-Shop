@@ -6,6 +6,7 @@ export * from "@/views/media/CreditsView";
 export * from "@/views/media/GenreView";
 export * from "@/views/media/MovieView";
 export * from "@/views/media/ReviewsView";
+export * from "@/views/media/SummaryView";
 export * from "@/views/media/TrailersView";
 export * from "@/views/media/TrendingView";
 

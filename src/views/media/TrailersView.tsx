@@ -12,7 +12,6 @@ export const TrailersView = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-bold text-2xl">Trailers</h2>
       {!data ? (
         <p className="text-center text-gray-400">Loading trailers...</p>
       ) : trailers.length === 0 ? (

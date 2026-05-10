@@ -10,7 +10,6 @@ export const ReviewsView = () => {
 
   return (
     <div className="mt-6 space-y-4">
-      <h2 className="font-bold text-2xl text-[#f0f4ef]">Reviews</h2>
       {!data ? (
         <p className="text-center text-gray-400">Loading reviews...</p>
       ) : !data.results?.length ? (

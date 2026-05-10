@@ -20,7 +20,6 @@ export const CreditsView = () => {
 
   return (
     <div className="p-6">
-      <h2 className="mb-6 font-bold text-2xl text-[#f0f4ef]">Credits</h2>
       {!data ? (
         <p className="text-center text-gray-400">Loading credits...</p>
       ) : !data.cast?.length ? (

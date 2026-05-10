@@ -14,6 +14,7 @@ import {
   ReviewsView,
   SearchView,
   SeasonsView,
+  SummaryView,
   TelevisionView,
   TrailersView,
   TrendingView,
@@ -46,14 +47,16 @@ export const App = () => {
         </Route>
 
         <Route element={<MovieView />} path="movie/:id">
-          <Route element={<Navigate replace to="credits" />} index />
+          <Route element={<Navigate replace to="summary" />} index />
+          <Route element={<SummaryView />} path="summary" />
           <Route element={<CreditsView />} path="credits" />
           <Route element={<TrailersView />} path="trailers" />
           <Route element={<ReviewsView />} path="reviews" />
         </Route>
 
         <Route element={<MovieView />} path="tv/:id">
-          <Route element={<Navigate replace to="seasons" />} index />
+          <Route element={<Navigate replace to="summary" />} index />
+          <Route element={<SummaryView />} path="summary" />
           <Route element={<CreditsView />} path="credits" />
           <Route element={<TrailersView />} path="trailers" />
           <Route element={<ReviewsView />} path="reviews" />
