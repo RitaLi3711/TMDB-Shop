@@ -1,28 +1,30 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ImageGrid } from "@/components";
-import { IMAGE_BASE_URL, PERSON_ENDPOINT, type PersonCareerResponse } from "@/core";
+import type { ImageCell } from "@/core";
+import { getImageUrl, PERSON_ENDPOINT, type PersonCareerResponse } from "@/core";
 import { useTmdb } from "@/hooks";
 
 export const CareerView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data } = useTmdb<PersonCareerResponse>(`${PERSON_ENDPOINT}/${id}/movie_credits`, {}, [id]);
 
-  if (!data?.cast) return <p className="mt-6 text-center text-gray-400">Loading...</p>;
+  const { data } = useTmdb<PersonCareerResponse>(`${PERSON_ENDPOINT}/${id ?? ""}/movie_credits`, {});
+
+  const gridData: ImageCell[] = (data?.cast ?? []).map((item) => ({
+    id: item.id,
+    imageUrl: getImageUrl(item.poster_path ?? ""),
+    primaryText: item.title || item.name || "",
+    secondaryText: item.character,
+  }));
 
   return (
     <div className="space-y-6 p-6 pt-8">
       <h2 className="font-bold text-2xl text-[#f0f4ef]">Career</h2>
-
-      <ImageGrid
-        onClick={(id) => navigate(`/movie/${id}`)}
-        results={data.cast.map((item) => ({
-          id: item.id,
-          imageUrl: `${IMAGE_BASE_URL}${item.poster_path ?? ""}`,
-          primaryText: item.title || item.name || "",
-          secondaryText: item.character,
-        }))}
-      />
+      {!data ? (
+        <p className="text-center text-gray-400">Loading...</p>
+      ) : (
+        <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} />
+      )}
     </div>
   );
 };
