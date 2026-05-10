@@ -1,29 +1,29 @@
-import { MOVIE_ENDPOINT, TV_ENDPOINT, type TrailerResponse } from '@/core';
-import { useTmdb } from '@/hooks';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from "react-router-dom";
+import { MOVIE_ENDPOINT, type TrailerResponse, TV_ENDPOINT } from "@/core";
+import { useTmdb } from "@/hooks";
 
 export const TrailersView = () => {
   const { id } = useParams();
   const location = useLocation();
-  const endpoint = location.pathname.includes('/movie/') ? MOVIE_ENDPOINT : TV_ENDPOINT;
-  const { data } = useTmdb<TrailerResponse>(`${endpoint}/${id}`, { append_to_response: 'videos' }, [id, endpoint]);
-  const trailers = data?.videos?.results?.filter((video) => video.site === 'YouTube' && video.type === 'Trailer') || [];
+  const endpoint = location.pathname.includes("/movie/") ? MOVIE_ENDPOINT : TV_ENDPOINT;
+  const { data } = useTmdb<TrailerResponse>(`${endpoint}/${id}`, { append_to_response: "videos" }, [id, endpoint]);
+  const trailers = data?.videos?.results?.filter((video) => video.site === "YouTube" && video.type === "Trailer") || [];
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Trailers</h2>
+      <h2 className="font-bold text-2xl">Trailers</h2>
       {!data || trailers.length === 0 ? (
-        <p className="text-center text-gray-400">{!data ? 'Loading trailers...' : 'No trailers available.'}</p>
+        <p className="text-center text-gray-400">{!data ? "Loading trailers..." : "No trailers available."}</p>
       ) : (
         <div className="space-y-6">
           {trailers.map((trailer) => (
-            <div key={trailer.key} className="space-y-2">
-              <div className="w-full max-w-3xl aspect-video mx-auto">
+            <div className="space-y-2" key={trailer.key}>
+              <div className="mx-auto aspect-video w-full max-w-3xl">
                 <iframe
-                  className="w-full h-full rounded-xl"
+                  allowFullScreen
+                  className="h-full w-full rounded-xl"
                   src={`https://www.youtube.com/embed/${trailer.key}`}
                   title={trailer.name}
-                  allowFullScreen
                 />
               </div>
             </div>

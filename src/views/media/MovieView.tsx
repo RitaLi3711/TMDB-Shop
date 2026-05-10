@@ -1,19 +1,19 @@
-import { LinkGroup, Modal } from '@/components';
-import { IMAGE_BASE_URL, MOVIE_ENDPOINT, ORIGINAL_IMAGE_BASE_URL, TV_ENDPOINT, type MovieResponse, type TvDetailsResponse } from '@/core';
-import { useTmdb } from '@/hooks';
-import { FaCalendarAlt } from 'react-icons/fa';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { FaCalendarAlt } from "react-icons/fa";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { LinkGroup, Modal } from "@/components";
+import { IMAGE_BASE_URL, MOVIE_ENDPOINT, type MovieResponse, ORIGINAL_IMAGE_BASE_URL, TV_ENDPOINT, type TvDetailsResponse } from "@/core";
+import { useTmdb } from "@/hooks";
 
 export const MovieView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
 
-  const isMovie = location.pathname.includes('/movie/');
+  const isMovie = location.pathname.includes("/movie/");
   const { data } = useTmdb<MovieResponse | TvDetailsResponse>(
     `${isMovie ? MOVIE_ENDPOINT : TV_ENDPOINT}/${id}`,
-    { append_to_response: 'videos' },
-    [id, isMovie]
+    { append_to_response: "videos" },
+    [id, isMovie],
   );
 
   if (!data) return <p className="text-center text-gray-400">Loading...</p>;
@@ -23,28 +23,28 @@ export const MovieView = () => {
 
   return (
     <Modal onClose={() => navigate(-1)}>
-      <div className="p-6 space-y-6">
+      <div className="space-y-6 p-6">
         <div
-          className="h-[420px] bg-cover bg-center rounded-2xl"
+          className="h-[420px] rounded-2xl bg-center bg-cover"
           style={{ backgroundImage: `url(${ORIGINAL_IMAGE_BASE_URL}${data.backdrop_path})` }}
         />
         <div className="flex gap-8">
-          <img className="w-[220px] h-[330px] object-cover rounded-xl" src={`${IMAGE_BASE_URL}${data.poster_path}`} alt={title} />
+          <img alt={title} className="h-[330px] w-[220px] rounded-xl object-cover" src={`${IMAGE_BASE_URL}${data.poster_path}`} />
           <div className="flex-1 space-y-4">
-            <h1 className="text-3xl font-bold">{title}</h1>
+            <h1 className="font-bold text-3xl">{title}</h1>
             <div className="text-gray-400">
               <p className="flex items-center gap-2">
                 <FaCalendarAlt />
-                {date || 'Date TBA'}
+                {date || "Date TBA"}
               </p>
               {!isMovie && (
                 <p className="mt-1">
-                  {(data as TvDetailsResponse).seasons?.filter((season) => season.season_number > 0).length}{' '}
+                  {(data as TvDetailsResponse).seasons?.filter((season) => season.season_number > 0).length}{" "}
                   Seasons&nbsp;&nbsp;-&nbsp;&nbsp;
                   {(data as TvDetailsResponse).seasons?.reduce(
                     (total, season) => (season.season_number > 0 ? total + season.episode_count : total),
-                    0
-                  )}{' '}
+                    0,
+                  )}{" "}
                   Episodes
                 </p>
               )}
@@ -54,15 +54,15 @@ export const MovieView = () => {
               options={
                 isMovie
                   ? [
-                      { label: 'Credits', to: 'credits' },
-                      { label: 'Trailers', to: 'trailers' },
-                      { label: 'Reviews', to: 'reviews' },
+                      { label: "Credits", to: "credits" },
+                      { label: "Trailers", to: "trailers" },
+                      { label: "Reviews", to: "reviews" },
                     ]
                   : [
-                      { label: 'Seasons', to: 'seasons', match: ['/tv/:id/seasons', '/tv/:id/season/:seasonNumber'] },
-                      { label: 'Credits', to: 'credits' },
-                      { label: 'Trailers', to: 'trailers' },
-                      { label: 'Reviews', to: 'reviews' },
+                      { label: "Seasons", match: ["/tv/:id/seasons", "/tv/:id/season/:seasonNumber"], to: "seasons" },
+                      { label: "Credits", to: "credits" },
+                      { label: "Trailers", to: "trailers" },
+                      { label: "Reviews", to: "reviews" },
                     ]
               }
             />

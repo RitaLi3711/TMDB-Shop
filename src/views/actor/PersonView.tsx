@@ -1,8 +1,8 @@
-import { Button, LinkGroup } from '@/components';
-import { IMAGE_BASE_URL, PERSON_ENDPOINT, type PersonResponse } from '@/core';
-import { useTmdb } from '@/hooks';
-import { FaBirthdayCake, FaLocationArrow } from 'react-icons/fa';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { FaBirthdayCake, FaLocationArrow } from "react-icons/fa";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Button, LinkGroup } from "@/components";
+import { IMAGE_BASE_URL, PERSON_ENDPOINT, type PersonResponse } from "@/core";
+import { useTmdb } from "@/hooks";
 
 export const PersonView = () => {
   const { id } = useParams();
@@ -10,20 +10,20 @@ export const PersonView = () => {
 
   const { data: person } = useTmdb<PersonResponse>(`${PERSON_ENDPOINT}/${id}`, {}, [id]);
 
-  if (!person) return <p className="text-center text-gray-400 p-5">Loading...</p>;
+  if (!person) return <p className="p-5 text-center text-gray-400">Loading...</p>;
 
   return (
-    <div className="max-w-[1600px] mx-auto px-8 pt-16 pb-5">
-      <div className="flex gap-8 mb-6">
-        <img src={`${IMAGE_BASE_URL}${person.profile_path}`} alt={person.name} className="w-64 aspect-[2/3] object-cover rounded-lg" />
+    <div className="mx-auto max-w-[1600px] px-8 pt-16 pb-5">
+      <div className="mb-6 flex gap-8">
+        <img alt={person.name} className="aspect-[2/3] w-64 rounded-lg object-cover" src={`${IMAGE_BASE_URL}${person.profile_path}`} />
 
         <div className="flex-1">
           <div className="mb-6">
             <Button onClick={() => navigate(-1)}>← Back</Button>
           </div>
-          <h2 className="text-3xl font-bold text-white mb-2">{person.name}</h2>
+          <h2 className="mb-2 font-bold text-3xl text-white">{person.name}</h2>
 
-          <div className="flex flex-col gap-3 text-sm text-gray-400 mb-6">
+          <div className="mb-6 flex flex-col gap-3 text-gray-400 text-sm">
             {person.place_of_birth && (
               <div className="flex items-center gap-2">
                 <FaLocationArrow />
@@ -47,11 +47,11 @@ export const PersonView = () => {
         </div>
       </div>
 
-      <div className="flex justify-center mt-6">
+      <div className="mt-6 flex justify-center">
         <LinkGroup
           options={[
-            { label: 'Career', to: 'career' },
-            { label: 'Images', to: 'images' },
+            { label: "Career", to: "career" },
+            { label: "Images", to: "images" },
           ]}
         />
       </div>

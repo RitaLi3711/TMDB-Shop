@@ -1,12 +1,68 @@
-import { Route, Routes } from "react-router-dom";
-import { MainLayout } from "@/layouts";
-import { HomeView } from "@/views";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { MainLayout } from "@/layouts/MainLayout";
+import {
+  CareerView,
+  CreditsView,
+  EpisodeView,
+  ErrorView,
+  GenreView,
+  HomeView,
+  ImagesView,
+  MoviesView,
+  MovieView,
+  PersonView,
+  ReviewsView,
+  SearchView,
+  SeasonsView,
+  TelevisionView,
+  TrailersView,
+  TrendingView,
+} from "@/views";
 
 export const App = () => {
   return (
     <Routes>
-      <Route element={<HomeView />} path="/" />
-      <Route element={<MainLayout />}></Route>
+      <Route element={<MainLayout />}>
+        <Route element={<HomeView />} path="/" />
+
+        <Route element={<Navigate replace to="/movies/category/now_playing" />} path="movies" />
+        <Route element={<MoviesView />} path="movies/category/:interval" />
+
+        <Route element={<Navigate replace to="/tv/category/airing_today" />} path="tv" />
+        <Route element={<TelevisionView />} path="tv/category/:interval" />
+
+        <Route element={<Navigate replace to="/trending/movie" />} path="trending" />
+        <Route element={<TrendingView />} path="trending/:mediaType" />
+
+        <Route element={<GenreView />} path="genre" />
+        <Route element={<GenreView />} path="genre/:type/:genreSlug" />
+
+        <Route element={<SearchView />} path="search" />
+
+        <Route element={<PersonView />} path="person/:id">
+          <Route element={<Navigate replace to="career" />} index />
+          <Route element={<CareerView />} path="career" />
+          <Route element={<ImagesView />} path="images" />
+        </Route>
+
+        <Route element={<MovieView />} path="movie/:id">
+          <Route element={<Navigate replace to="credits" />} index />
+          <Route element={<CreditsView />} path="credits" />
+          <Route element={<TrailersView />} path="trailers" />
+          <Route element={<ReviewsView />} path="reviews" />
+        </Route>
+
+        <Route element={<MovieView />} path="tv/:id">
+          <Route element={<Navigate replace to="seasons" />} index />
+          <Route element={<CreditsView />} path="credits" />
+          <Route element={<TrailersView />} path="trailers" />
+          <Route element={<ReviewsView />} path="reviews" />
+          <Route element={<SeasonsView />} path="seasons" />
+          <Route element={<EpisodeView />} path="season/:seasonNumber" />
+        </Route>
+
+        <Route element={<ErrorView />} path="*" />
+      </Route>
     </Routes>
   );
 };
