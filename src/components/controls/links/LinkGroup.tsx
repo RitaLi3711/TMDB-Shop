@@ -1,21 +1,21 @@
-import { Link } from "@/components";
+import { Link } from '@/components';
 
 type LinkGroupProps = {
   options: Array<{
     label: string;
     to: string;
-    match?: string;
+    match?: string[];  // Array of strings
   }>;
 };
 
 export const LinkGroup = ({ options }: LinkGroupProps) => {
   return (
-    <nav className="flex gap-3">
+    <div className="flex gap-6">
       {options.map((option) => (
-        <Link key={option.label} match={option.match} to={option.to}>
+        <Link key={option.label} to={option.to} match={option.match} replace={true}>
           {option.label}
         </Link>
       ))}
-    </nav>
+    </div>
   );
 };

@@ -1,27 +1,32 @@
-import type { ReactNode } from "react";
-import { NavLink, useMatch } from "react-router-dom";
+import type { ReactNode } from 'react';
+import { matchPath, NavLink, useLocation } from 'react-router-dom';
 
 type LinkProps = {
   children: ReactNode;
   to: string;
-  match?: string;
+  match?: string[];
+  replace?: boolean;
 };
 
-export const Link = ({ children, to, match }: LinkProps) => {
-  const matchResult = useMatch({ path: match || "" });
-  const isMatched = !!match && !!matchResult;
+export const Link = ({ children, to, match = [], replace = false }: LinkProps) => {
+  const { pathname } = useLocation();
+
+  const matched = match.some((pattern) =>
+    matchPath({ path: pattern, end: false }, pathname)
+  );
 
   return (
     <NavLink
+      to={to}
+      replace={replace}
       className={({ isActive }) =>
-        `rounded-md border px-4 py-1 transition-all duration-200 ${
-          isActive || isMatched
-            ? "scale-105 border-white bg-white text-gray-900 shadow-lg"
-            : "border-gray-700 bg-gray-700 text-gray-300 hover:border-gray-500 hover:bg-gray-600 hover:text-white"
+        `px-4 py-2 rounded-md transition-all duration-200 border ${
+          isActive || matched
+            ? 'bg-[#e6aace] text-[#0d1821] border-[#e6aace] shadow-lg scale-105'
+            : 'bg-[#344966] text-[#f0f4ef] border-[#344966] hover:bg-[#2a3b52] hover:text-[#f0f4ef] hover:border-[#bfcc94]'
         }`
       }
-      replace
-      to={to}
+      end
     >
       {children}
     </NavLink>

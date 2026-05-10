@@ -22,10 +22,10 @@ export const Header = () => {
           </h1>
           <LinkGroup
             options={[
-              { label: "Movies", match: "/movies", to: "/movies/category/now_playing" },
-              { label: "TV", match: "/tv", to: "/tv/category/airing_today" },
-              { label: "Trending", match: "/trending", to: "/trending/movie" },
-              { label: "Genre", match: "/genre", to: "/genre/movies/action" },
+              { label: "Movies", match: ["/movies"], to: "/movies/category/now_playing" },
+              { label: "TV", match: ["/tv"], to: "/tv/category/airing_today" },
+              { label: "Trending", match: ["/trending"], to: "/trending/movies" },
+              { label: "Genre", match: ["/genre"], to: "/genre/movies/action" },
             ]}
           />
         </div>
