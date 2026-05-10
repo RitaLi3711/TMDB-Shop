@@ -1,13 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ImageGrid } from "@/components";
-import type { ImageCell } from "@/core";
-import { getImageUrl, PERSON_ENDPOINT, type PersonCareerResponse } from "@/core";
+import { getImageUrl, type ImageCell, PERSON_ENDPOINT, type PersonCareerResponse } from "@/core";
 import { useTmdb } from "@/hooks";
 
 export const CareerView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const { data } = useTmdb<PersonCareerResponse>(`${PERSON_ENDPOINT}/${id ?? ""}/movie_credits`, {});
 
   const gridData: ImageCell[] = (data?.cast ?? []).map((item) => ({
