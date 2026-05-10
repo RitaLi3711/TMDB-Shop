@@ -1,10 +1,10 @@
-import { Link } from '@/components';
+import { Link } from "@/components";
 
 type LinkGroupProps = {
   options: Array<{
     label: string;
     to: string;
-    match?: string[];  // Array of strings
+    match?: string[]; // Array of strings
   }>;
 };
 
@@ -12,7 +12,7 @@ export const LinkGroup = ({ options }: LinkGroupProps) => {
   return (
     <div className="flex gap-6">
       {options.map((option) => (
-        <Link key={option.label} to={option.to} match={option.match} replace={true}>
+        <Link key={option.label} match={option.match} replace={true} to={option.to}>
           {option.label}
         </Link>
       ))}
