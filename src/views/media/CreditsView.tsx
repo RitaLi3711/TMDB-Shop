@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ImageGrid } from "@/components";
-import { type CreditsResponse, IMAGE_BASE_URL, MOVIE_ENDPOINT, TV_ENDPOINT } from "@/core";
+import { type CreditsResponse, getImageUrl, type ImageCell, MOVIE_ENDPOINT, TV_ENDPOINT } from "@/core";
 import { useTmdb } from "@/hooks";
 
 export const CreditsView = () => {
@@ -8,23 +8,25 @@ export const CreditsView = () => {
   const { id } = useParams();
   const location = useLocation();
   const isMovie = location.pathname.includes("/movie/");
-  const { data } = useTmdb<CreditsResponse>(`${isMovie ? MOVIE_ENDPOINT : TV_ENDPOINT}/${id}/credits`, {}, [id, isMovie]);
+
+  const { data } = useTmdb<CreditsResponse>(`${isMovie ? MOVIE_ENDPOINT : TV_ENDPOINT}/${id ?? ""}/credits`, {});
+
+  const gridData: ImageCell[] = (data?.cast ?? []).map((person) => ({
+    id: person.id,
+    imageUrl: getImageUrl(person.profile_path ?? ""),
+    primaryText: person.name,
+    secondaryText: person.character,
+  }));
 
   return (
     <div className="p-6">
       <h2 className="mb-6 font-bold text-2xl text-[#f0f4ef]">Credits</h2>
-      {!data?.cast.length ? (
-        <p className="text-center text-gray-400">{!data ? "Loading credits..." : "No credits available."}</p>
+      {!data ? (
+        <p className="text-center text-gray-400">Loading credits...</p>
+      ) : !data.cast?.length ? (
+        <p className="text-center text-gray-400">No credits available.</p>
       ) : (
-        <ImageGrid
-          onClick={(personId) => navigate(`/person/${personId}`)}
-          results={data.cast.map((person) => ({
-            id: person.id,
-            imageUrl: `${IMAGE_BASE_URL}${person.profile_path ?? ""}`,
-            primaryText: person.name,
-            secondaryText: person.character,
-          }))}
-        />
+        <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/person/${image.id}`)} />
       )}
     </div>
   );
