@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ButtonGroup, ImageGrid } from "@/components";
-import { IMAGE_BASE_URL, TRENDING_ENDPOINT, type TrendingResponse } from "@/core";
+import { getImageUrl, type ImageCell, TRENDING_ENDPOINT, type TrendingResponse } from "@/core";
 import { useTmdb } from "@/hooks";
 
 export const TrendingView = () => {
@@ -14,17 +14,16 @@ export const TrendingView = () => {
     navigate(`/trending/${type}?interval=${timeWindow}`, { replace: true });
   }, [timeWindow, type, navigate]);
 
-  const { data } = useTmdb<TrendingResponse>(`${TRENDING_ENDPOINT}/${type === "movies" ? "movie" : type}/${timeWindow}`, {}, [
-    type,
-    timeWindow,
-  ]);
+  const { data } = useTmdb<TrendingResponse>(`${TRENDING_ENDPOINT}/${type === "movies" ? "movie" : type}/${timeWindow}`, {});
 
-  if (!data) {
-    return <p className="text-center text-gray-400">Loading trending...</p>;
-  }
+  const gridData: ImageCell[] = (data?.results ?? []).slice(0, 20).map((item) => ({
+    id: item.id,
+    imageUrl: getImageUrl(item.poster_path ?? ""),
+    primaryText: item.title || item.name || "",
+  }));
 
   return (
-    <section className="mx-auto max-w-[1600px] space-y-5 p-5">
+    <section className="mx-auto max-w-400 space-y-5 p-5">
       <div className="flex items-center justify-between">
         <ButtonGroup
           onClick={(value) => setType(value as "movies" | "tv")}
@@ -45,17 +44,17 @@ export const TrendingView = () => {
         />
       </div>
 
-      <ImageGrid
-        onClick={(id) => {
-          const item = data.results.find((result) => result.id === id);
-          navigate(item?.media_type === "movie" ? `/movie/${id}` : `/tv/${id}`);
-        }}
-        results={data.results.slice(0, 20).map((item) => ({
-          id: item.id,
-          imageUrl: `${IMAGE_BASE_URL}${item.poster_path ?? ""}`,
-          primaryText: item.title || item.name || "",
-        }))}
-      />
+      {!data ? (
+        <p className="text-center text-gray-400">Loading trending...</p>
+      ) : (
+        <ImageGrid
+          images={gridData}
+          onClick={(image: ImageCell) => {
+            const item = data.results.find((result) => result.id === image.id);
+            navigate(item?.media_type === "movie" ? `/movie/${image.id}` : `/tv/${image.id}`);
+          }}
+        />
+      )}
     </section>
   );
 };
