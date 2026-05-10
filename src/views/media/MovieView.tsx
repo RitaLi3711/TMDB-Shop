@@ -21,7 +21,7 @@ export const MovieView = () => {
 
   return (
     <Modal onClick={() => navigate(-1)}>
-      <div className="space-y-6 p-6">
+      <div className="h-full space-y-6 overflow-y-auto p-6">
         {!data ? (
           <p className="text-center text-gray-400">Loading...</p>
         ) : (

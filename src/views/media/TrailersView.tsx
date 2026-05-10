@@ -18,17 +18,15 @@ export const TrailersView = () => {
       ) : trailers.length === 0 ? (
         <p className="text-center text-gray-400">No trailers available.</p>
       ) : (
-        <div className="space-y-6">
+        <div className="grid grid-cols-2 gap-6">
           {trailers.map((trailer) => (
-            <div className="space-y-2" key={trailer.key}>
-              <div className="mx-auto aspect-video w-full max-w-3xl">
-                <iframe
-                  allowFullScreen
-                  className="h-full w-full rounded-xl"
-                  src={`https://www.youtube.com/embed/${trailer.key}`}
-                  title={trailer.name}
-                />
-              </div>
+            <div className="aspect-video w-full" key={trailer.key}>
+              <iframe
+                allowFullScreen
+                className="h-full w-full rounded-xl"
+                src={`https://www.youtube.com/embed/${trailer.key}`}
+                title={trailer.name}
+              />
             </div>
           ))}
         </div>
