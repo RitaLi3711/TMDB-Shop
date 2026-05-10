@@ -6,13 +6,15 @@ export const ReviewsView = () => {
   const { id } = useParams();
   const location = useLocation();
   const endpoint = location.pathname.includes("/movie/") ? MOVIE_ENDPOINT : TV_ENDPOINT;
-  const { data } = useTmdb<ReviewsResponse>(`${endpoint}/${id}/reviews`, {}, [id, endpoint]);
+  const { data } = useTmdb<ReviewsResponse>(`${endpoint}/${id ?? ""}/reviews`, {});
 
   return (
     <div className="mt-6 space-y-4">
       <h2 className="font-bold text-2xl text-[#f0f4ef]">Reviews</h2>
-      {!data?.results?.length ? (
-        <p className="text-center text-gray-400">{!data ? "Loading reviews..." : "No reviews available."}</p>
+      {!data ? (
+        <p className="text-center text-gray-400">Loading reviews...</p>
+      ) : !data.results?.length ? (
+        <p className="text-center text-gray-400">No reviews available.</p>
       ) : (
         <div className="space-y-4">
           {data.results.slice(0, 5).map((review) => (
