@@ -6,14 +6,17 @@ export const TrailersView = () => {
   const { id } = useParams();
   const location = useLocation();
   const endpoint = location.pathname.includes("/movie/") ? MOVIE_ENDPOINT : TV_ENDPOINT;
-  const { data } = useTmdb<TrailerResponse>(`${endpoint}/${id}`, { append_to_response: "videos" }, [id, endpoint]);
+  const { data } = useTmdb<TrailerResponse>(`${endpoint}/${id ?? ""}`, { append_to_response: "videos" });
+
   const trailers = data?.videos?.results?.filter((video) => video.site === "YouTube" && video.type === "Trailer") || [];
 
   return (
     <div className="space-y-6">
       <h2 className="font-bold text-2xl">Trailers</h2>
-      {!data || trailers.length === 0 ? (
-        <p className="text-center text-gray-400">{!data ? "Loading trailers..." : "No trailers available."}</p>
+      {!data ? (
+        <p className="text-center text-gray-400">Loading trailers...</p>
+      ) : trailers.length === 0 ? (
+        <p className="text-center text-gray-400">No trailers available.</p>
       ) : (
         <div className="space-y-6">
           {trailers.map((trailer) => (
