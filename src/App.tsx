@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { MainLayout } from "@/layouts/MainLayout";
 import {
   CareerView,
+  CartView,
   CreditsView,
   EpisodeView,
   ErrorView,
@@ -67,6 +68,8 @@ export const App = () => {
         </Route>
 
         <Route element={<FavoritesView />} path="favorites" />
+        <Route element={<CartView />} path="cart" />
+
         <Route element={<SettingsView />} path="user" />
 
         <Route element={<ErrorView />} path="*" />
