@@ -21,7 +21,7 @@ export const CareerView = () => {
       {!data ? (
         <p className="text-center text-gray-400">Loading...</p>
       ) : (
-        <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} />
+        <ImageGrid onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} results={gridData} />
       )}
     </div>
   );

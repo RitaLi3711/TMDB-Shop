@@ -26,11 +26,11 @@ export const SeasonsView = () => {
         <p className="text-gray-400">Loading seasons...</p>
       ) : (
         <ImageGrid
-          images={gridData}
           onClick={(image: ImageCell) => {
             const season = filteredSeasons.find((s) => s.id === image.id);
             if (season && season.season_number > 0) navigate(`/tv/${data.id}/season/${season.season_number}`);
           }}
+          results={gridData}
         />
       )}
     </div>

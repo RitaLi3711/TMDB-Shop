@@ -31,7 +31,7 @@ export const SearchView = () => {
         <p className="text-center text-[#f0f4ef]">Loading...</p>
       ) : data.results.length ? (
         <>
-          <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/${type}/${image.id}`)} />
+          <ImageGrid onClick={(image: ImageCell) => navigate(`/${type}/${image.id}`)} results={gridData} />
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
       ) : (

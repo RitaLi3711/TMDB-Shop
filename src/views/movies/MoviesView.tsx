@@ -36,7 +36,7 @@ export const MoviesView = () => {
         <p className="text-center text-gray-400">Loading...</p>
       ) : (
         <>
-          <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} />
+          <ImageGrid onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} results={gridData} />
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
       )}

@@ -19,3 +19,6 @@ export * from "@/views/site/SearchView";
 export * from "@/views/tv/EpisodeView";
 export * from "@/views/tv/SeasonsView";
 export * from "@/views/tv/TelevisionView";
+
+export * from "@/views/user/FavoritesView";
+export * from "@/views/user/SettingsView";

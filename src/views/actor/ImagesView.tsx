@@ -21,7 +21,7 @@ export const ImagesView = () => {
       ) : !data.profiles?.length ? (
         <p className="text-center text-gray-400">No images available.</p>
       ) : (
-        <ImageGrid images={gridData} />
+        <ImageGrid results={gridData} />
       )}
     </div>
   );

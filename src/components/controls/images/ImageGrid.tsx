@@ -2,31 +2,31 @@ import type { ReactNode } from "react";
 import type { ImageCell } from "@/core";
 
 type ImageGridProps = {
-  images: ImageCell[];
+  results: ImageCell[];
   onClick?: (image: ImageCell) => void;
   children?: (image: ImageCell) => ReactNode;
 };
 
-export const ImageGrid = ({ images, onClick, children }: ImageGridProps) => {
+export const ImageGrid = ({ results, onClick, children }: ImageGridProps) => {
   return (
     <div className="grid w-full grid-cols-5 gap-5">
-      {images.map((image) => (
+      {results.map((result) => (
         <div
           className={`relative overflow-hidden rounded-lg bg-gray-800 ${onClick ? "cursor-pointer transition hover:scale-[1.02]" : ""}`}
-          key={image.id}
-          onClick={() => onClick?.(image)}
+          key={result.id}
+          onClick={() => onClick?.(result)}
         >
-          {children?.(image)}
-          {image.imageUrl ? (
-            <img alt={image.primaryText} className="aspect-2/3 w-full object-cover" src={image.imageUrl} />
+          {children?.(result)}
+          {result.imageUrl ? (
+            <img alt={result.primaryText} className="aspect-2/3 w-full object-cover" src={result.imageUrl} />
           ) : (
             <div className="flex aspect-2/3 w-full items-center justify-center bg-gray-700">
               <span className="text-gray-400">No image</span>
             </div>
           )}
           <div className="p-3 text-center">
-            <p className="truncate font-semibold text-[#f0f4ef] text-sm">{image.primaryText}</p>
-            {image.secondaryText && <p className="text-gray-400 text-xs">{image.secondaryText}</p>}
+            <p className="truncate font-semibold text-[#f0f4ef] text-sm">{result.primaryText}</p>
+            {result.secondaryText && <p className="text-gray-400 text-xs">{result.secondaryText}</p>}
           </div>
         </div>
       ))}

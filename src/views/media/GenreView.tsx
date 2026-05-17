@@ -57,7 +57,7 @@ export const GenreView = () => {
         <p className="text-center text-gray-400">Loading genres...</p>
       ) : (
         <>
-          <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} />
+          <ImageGrid onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} results={gridData} />
 
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>

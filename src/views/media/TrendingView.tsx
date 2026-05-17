@@ -48,11 +48,11 @@ export const TrendingView = () => {
         <p className="text-center text-gray-400">Loading trending...</p>
       ) : (
         <ImageGrid
-          images={gridData}
           onClick={(image: ImageCell) => {
             const item = data.results.find((result) => result.id === image.id);
             navigate(item?.media_type === "movie" ? `/movie/${image.id}` : `/tv/${image.id}`);
           }}
+          results={gridData}
         />
       )}
     </section>

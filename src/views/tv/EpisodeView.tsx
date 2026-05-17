@@ -43,7 +43,7 @@ export const EpisodeView = () => {
             <h2 className="mt-8 font-bold text-2xl">Episodes</h2>
           </div>
 
-          <ImageGrid images={gridData} />
+          <ImageGrid results={gridData} />
         </>
       )}
     </div>

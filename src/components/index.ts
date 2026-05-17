@@ -1,5 +1,6 @@
 export * from "@/components/controls/buttons/Button";
 export * from "@/components/controls/buttons/ButtonGroup";
+export * from "@/components/controls/images/FavoritesOverlay";
 export * from "@/components/controls/images/ImageGrid";
 export * from "@/components/controls/links/Link";
 export * from "@/components/controls/links/LinkGroup";

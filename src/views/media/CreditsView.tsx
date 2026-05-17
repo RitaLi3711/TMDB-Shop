@@ -25,7 +25,7 @@ export const CreditsView = () => {
       ) : !data.cast?.length ? (
         <p className="text-center text-gray-400">No credits available.</p>
       ) : (
-        <ImageGrid images={gridData} onClick={(image: ImageCell) => navigate(`/person/${image.id}`)} />
+        <ImageGrid onClick={(image: ImageCell) => navigate(`/person/${image.id}`)} results={gridData} />
       )}
     </div>
   );

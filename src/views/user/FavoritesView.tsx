@@ -1,20 +1,20 @@
-import { FavoritesOverlay, ImageGrid } from '@/components';
-import { useUserContext } from '@/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { FavoritesOverlay, ImageGrid } from "@/components";
+import { useUserContext } from "@/hooks";
 
 export const FavoritesView = () => {
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useUserContext();
 
   return (
-    <section className="w-full max-w-7xl mx-auto space-y-5 p-5">
-      <h1 className="text-3xl font-bold">Favorites</h1>
+    <section className="mx-auto w-full max-w-7xl space-y-5 p-5">
+      <h1 className="font-bold text-3xl">Favorites</h1>
       {favorites.size !== 0 ? (
-        <ImageGrid results={Array.from(favorites.values())} onClick={(id) => navigate(`/movie/${id}/credits`)}>
-          {(item) => <FavoritesOverlay item={item} favorites={favorites} toggleFavorite={toggleFavorite} />}
+        <ImageGrid onClick={(id) => navigate(`/movie/${id}/credits`)} results={Array.from(favorites.values())}>
+          {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
         </ImageGrid>
       ) : (
-        <p className="text-center text-gray-400 mt-10">You have no favorites yet</p>
+        <p className="mt-10 text-center text-gray-400">You have no favorites yet</p>
       )}
     </section>
   );

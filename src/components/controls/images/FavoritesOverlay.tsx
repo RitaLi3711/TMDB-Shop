@@ -1,5 +1,5 @@
-import { ICON_SIZE, type ImageCell } from '@/core';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { ICON_SIZE, type ImageCell } from "@/core";
 
 type FavoritesOverlayProps = {
   item: ImageCell;
@@ -9,16 +9,16 @@ type FavoritesOverlayProps = {
 
 export const FavoritesOverlay = ({ item, favorites, toggleFavorite }: FavoritesOverlayProps) => (
   <button
+    className="absolute top-1 right-1 z-10 rounded-full bg-black/50 p-2 backdrop-blur-sm transition hover:bg-black/70"
     onClick={(event) => {
       event.stopPropagation();
       toggleFavorite(item);
     }}
-    className="absolute top-1 right-1 z-10 p-2 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition"
   >
     {favorites.has(item.id) ? (
-      <FaHeart size={ICON_SIZE} className="text-blue-500" />
+      <FaHeart className="text-blue-500" size={ICON_SIZE} />
     ) : (
-      <FaRegHeart size={ICON_SIZE} className="text-white" />
+      <FaRegHeart className="text-white" size={ICON_SIZE} />
     )}
   </button>
 );
