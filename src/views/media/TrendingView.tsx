@@ -55,7 +55,14 @@ export const TrendingView = () => {
           }}
           results={gridData}
         >
-          {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
+          {(item) => (
+            <FavoritesOverlay
+              favorites={favorites}
+              item={item}
+              media={type === "movies" ? "movie" : "tv"}
+              toggleFavorite={toggleFavorite}
+            />
+          )}
         </ImageGrid>
       )}
     </section>

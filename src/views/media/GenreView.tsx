@@ -63,7 +63,14 @@ export const GenreView = () => {
       ) : (
         <>
           <ImageGrid onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} results={gridData}>
-            {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
+            {(item) => (
+              <FavoritesOverlay
+                favorites={favorites}
+                item={item}
+                media={type === "movies" ? "movie" : "tv"}
+                toggleFavorite={toggleFavorite}
+              />
+            )}
           </ImageGrid>
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
