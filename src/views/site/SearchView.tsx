@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FaFrown } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ImageGrid, Pagination } from "@/components";
+import { FavoritesOverlay, ImageGrid, Pagination } from "@/components";
 import { getImageUrl, type ImageCell, SEARCH_ENDPOINT, type SearchResponse } from "@/core";
-import { useDebounce, useTmdb } from "@/hooks";
+import { useDebounce, useTmdb, useUserContext } from "@/hooks";
 
 export const SearchView = () => {
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ export const SearchView = () => {
   const [page, setPage] = useState(1);
   const debounced = useDebounce(query, 500);
   const { data } = useTmdb<SearchResponse>(`${SEARCH_ENDPOINT}/${type}`, { page, query: debounced });
+  const { favorites, toggleFavorite } = useUserContext();
 
   const gridData: ImageCell[] = (data?.results ?? []).map((item) => ({
     id: item.id,
@@ -31,7 +32,9 @@ export const SearchView = () => {
         <p className="text-center text-[#f0f4ef]">Loading...</p>
       ) : data.results.length ? (
         <>
-          <ImageGrid onClick={(image: ImageCell) => navigate(`/${type}/${image.id}`)} results={gridData} />
+          <ImageGrid onClick={(image: ImageCell) => navigate(`/${type}/${image.id}`)} results={gridData}>
+            {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
+          </ImageGrid>
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
       ) : (

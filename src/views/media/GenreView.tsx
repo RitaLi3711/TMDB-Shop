@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, ButtonGroup, ImageGrid, Pagination } from "@/components";
+import { Button, ButtonGroup, FavoritesOverlay, ImageGrid, Pagination } from "@/components";
 import { GENRE_ENDPOINT, type GenreResponse, getImageUrl, type ImageCell, movieGenres, tvGenres } from "@/core";
-import { useTmdb } from "@/hooks";
+import { useTmdb, useUserContext } from "@/hooks";
 
 export const GenreView = () => {
   const navigate = useNavigate();
   const { type: urlType = "movies", genreSlug = "action" } = useParams();
   const [type, setType] = useState<"movies" | "tv">(urlType as "movies" | "tv");
   const [page, setPage] = useState(1);
+  const { favorites, toggleFavorite } = useUserContext();
 
   const genres = type === "movies" ? movieGenres : tvGenres;
   const selectedGenre = genres.find((g) => g.slug === genreSlug)?.value ?? genres[0].value;
@@ -57,8 +58,9 @@ export const GenreView = () => {
         <p className="text-center text-gray-400">Loading genres...</p>
       ) : (
         <>
-          <ImageGrid onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} results={gridData} />
-
+          <ImageGrid onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} results={gridData}>
+            {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
+          </ImageGrid>
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
       )}

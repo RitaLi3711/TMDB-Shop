@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ButtonGroup, ImageGrid } from "@/components";
+import { ButtonGroup, FavoritesOverlay, ImageGrid } from "@/components";
 import { getImageUrl, type ImageCell, TRENDING_ENDPOINT, type TrendingResponse } from "@/core";
-import { useTmdb } from "@/hooks";
+import { useTmdb, useUserContext } from "@/hooks";
 
 export const TrendingView = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [type, setType] = useState<"movies" | "tv">("movies");
   const [timeWindow, setTimeWindow] = useState<"day" | "week">((searchParams.get("interval") as "day" | "week") || "day");
+  const { favorites, toggleFavorite } = useUserContext();
 
   useEffect(() => {
     navigate(`/trending/${type}?interval=${timeWindow}`, { replace: true });
@@ -53,7 +54,9 @@ export const TrendingView = () => {
             navigate(item?.media_type === "movie" ? `/movie/${image.id}` : `/tv/${image.id}`);
           }}
           results={gridData}
-        />
+        >
+          {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
+        </ImageGrid>
       )}
     </section>
   );
