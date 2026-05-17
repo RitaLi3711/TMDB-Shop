@@ -9,9 +9,13 @@ export const GenreView = () => {
   const { type: urlType = "movies", genreSlug = "action" } = useParams();
   const [type, setType] = useState<"movies" | "tv">(urlType as "movies" | "tv");
   const [page, setPage] = useState(1);
-  const { favorites, toggleFavorite } = useUserContext();
+  const { favorites, toggleFavorite, moviePreferences, tvPreferences } = useUserContext();
 
-  const genres = type === "movies" ? movieGenres : tvGenres;
+  const genres =
+    type === "movies"
+      ? movieGenres.filter((genre) => moviePreferences.length === 0 || moviePreferences.includes(genre.value))
+      : tvGenres.filter((genre) => tvPreferences.length === 0 || tvPreferences.includes(genre.value));
+
   const selectedGenre = genres.find((g) => g.slug === genreSlug)?.value ?? genres[0].value;
 
   const { data } = useTmdb<GenreResponse>(`${GENRE_ENDPOINT}/${type === "movies" ? "movie" : "tv"}`, { page, with_genres: selectedGenre });
