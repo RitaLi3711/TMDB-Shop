@@ -5,6 +5,7 @@ import {
   CreditsView,
   EpisodeView,
   ErrorView,
+  FavoritesView,
   GenreView,
   HomeView,
   ImagesView,
@@ -14,6 +15,7 @@ import {
   ReviewsView,
   SearchView,
   SeasonsView,
+  SettingsView,
   SummaryView,
   TelevisionView,
   TrailersView,
@@ -63,6 +65,9 @@ export const App = () => {
           <Route element={<SeasonsView />} path="seasons" />
           <Route element={<EpisodeView />} path="season/:seasonNumber" />
         </Route>
+
+        <Route element={<FavoritesView />} path="favorites" />
+        <Route element={<SettingsView />} path="user" />
 
         <Route element={<ErrorView />} path="*" />
       </Route>

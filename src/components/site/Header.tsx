@@ -20,7 +20,8 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 border-[#344966] border-b bg-[#0d1821]">
-      <div className="flex items-center justify-between gap-20 px-4 py-4">
+      {/* Top row - Main navigation */}
+      <div className="flex items-center justify-between gap-20 px-4 pt-4">
         <div className="flex items-center gap-4">
           <h1 className="cursor-pointer font-bold text-4xl text-[#f0f4ef]" onClick={() => navigate("/")}>
             TMDB Explorer
@@ -56,19 +57,24 @@ export const Header = () => {
             value={type}
           />
         </div>
+      </div>
 
-        <div className="flex items-center">
-          <h1 className="mr-4 text-gray-300 text-xl">{userName}</h1>
+      {/* Bottom row - User info and actions */}
+      <div className="flex items-center justify-between px-4 pt-2 pb-4">
+        <button className="text-2xl transition hover:opacity-80" onClick={() => navigate("/user")}>
+          Welcome, <span className="font-semibold text-pink-400">{userName}</span>
+        </button>
+        <div className="flex items-center gap-2">
           <button className="relative rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/favorites")}>
-            <FaRegHeart size={ICON_SIZE} />
+            <FaRegHeart color="#f0f4ef" size={ICON_SIZE} />
             {favorites.size > 0 && (
               <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] text-white">
                 {favorites.size}
               </span>
             )}
           </button>
-          <button className="relative rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/settings")}>
-            <GoGear size={ICON_SIZE} />
+          <button className="rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/user")}>
+            <GoGear color="#f0f4ef" size={ICON_SIZE} />
           </button>
         </div>
       </div>
