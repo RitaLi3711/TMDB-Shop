@@ -20,7 +20,7 @@ export const MovieView = () => {
 
   return (
     <Modal onClick={() => navigate(-1)}>
-      <div className="flex h-[80vh] flex-col">
+      <div className="flex h-[90vh] flex-col">
         {!data ? (
           <p className="p-6 text-center text-gray-400">Loading...</p>
         ) : (
