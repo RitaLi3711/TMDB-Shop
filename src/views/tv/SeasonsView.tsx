@@ -36,8 +36,23 @@ export const SeasonsView = () => {
         >
           {(item) => (
             <>
-              <FavoritesOverlay favorites={favorites} item={item} media="tv" toggleFavorite={toggleFavorite} />
-              <CartOverlay addToCart={addToCart} cart={cart} item={item} media="tv" removeFromCart={removeFromCart} />
+              <FavoritesOverlay
+                cart={cart}
+                favorites={favorites}
+                item={item}
+                media="tv"
+                removeFromCart={removeFromCart}
+                toggleFavorite={toggleFavorite}
+              />
+              <CartOverlay
+                addToCart={addToCart}
+                cart={cart}
+                favorites={favorites}
+                item={item}
+                media="tv"
+                removeFromCart={removeFromCart}
+                toggleFavorite={toggleFavorite}
+              />
             </>
           )}
         </ImageGrid>
