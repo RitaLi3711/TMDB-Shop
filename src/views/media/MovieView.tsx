@@ -17,7 +17,7 @@ export const MovieView = () => {
   const { id } = useParams();
   const location = useLocation();
   const { calculatePrice, formatPrice } = usePricing();
-  const { cart, addToCart, removeFromCart } = useUserContext();
+  const { cart, addToCart, removeFromCart, favorites, toggleFavorite } = useUserContext();
 
   const isMovie = location.pathname.includes("/movie/");
   const { data } = useTmdb<MovieResponse | TvDetailsResponse>(`${isMovie ? MOVIE_ENDPOINT : TV_ENDPOINT}/${id ?? ""}`, {
@@ -33,11 +33,15 @@ export const MovieView = () => {
 
   const movieId = data?.id || 0;
   const isInCart = cart.has(movieId);
+  const isFavorited = favorites.has(movieId);
 
   const handleCartClick = () => {
     if (isInCart) {
       removeFromCart(movieId);
     } else {
+      if (isFavorited) {
+        toggleFavorite({ id: movieId, imageUrl: posterUrl, media: "movie", primaryText: title });
+      }
       const cartItem: ImageCell = {
         id: movieId,
         imageUrl: posterUrl,
@@ -67,23 +71,21 @@ export const MovieView = () => {
                   <div className="flex items-center justify-between">
                     <h1 className="font-bold text-3xl">{title}</h1>
                     {isMovie && (
-                      <button
-                        className="rounded-full bg-black/50 p-2 backdrop-blur-sm transition hover:bg-black/70"
-                        onClick={handleCartClick}
-                      >
-                        {isInCart ? (
-                          <PiShoppingCartFill className="text-green-500" size={20} />
-                        ) : (
-                          <PiShoppingCartSimple className="text-white" size={20} />
-                        )}
-                      </button>
+                      <div className="flex flex-col items-end gap-1">
+                        <button
+                          className="rounded-full bg-black/50 p-2 backdrop-blur-sm transition hover:bg-black/70"
+                          onClick={handleCartClick}
+                        >
+                          {isInCart ? (
+                            <PiShoppingCartFill className="text-green-500" size={20} />
+                          ) : (
+                            <PiShoppingCartSimple className="text-white" size={20} />
+                          )}
+                        </button>
+                        {isMovie && price && <p className="font-semibold text-green-400 text-sm">{formatPrice(price)}</p>}
+                      </div>
                     )}
                   </div>
-                  {isMovie && price && (
-                    <div className="flex justify-end">
-                      <p className="font-semibold text-green-400">{formatPrice(price)}</p>
-                    </div>
-                  )}
                   {tagline && <p className="text-gray-400 text-sm italic">{tagline}</p>}
 
                   <LinkGroup

@@ -15,16 +15,10 @@ export const FavoritesOverlay = ({ item, favorites, cart, toggleFavorite, remove
     className="absolute top-1 right-1 z-10 rounded-full bg-black/50 p-2 backdrop-blur-sm transition hover:bg-black/70"
     onClick={(event) => {
       event.stopPropagation();
-      
-      // If item is in cart, remove it first
       if (cart.has(item.id)) {
         removeFromCart(item.id);
       }
-      
-      const favoriteItem = {
-        ...item,
-        media,
-      };
+      const favoriteItem = { ...item, media };
       toggleFavorite(favoriteItem);
     }}
   >
