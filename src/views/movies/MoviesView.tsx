@@ -10,7 +10,7 @@ export const MoviesView = () => {
   const [page, setPage] = useState(1);
   const category = interval ?? "now_playing";
   const { data } = useTmdb<MoviesResponse>(`${MOVIE_ENDPOINT}/${category}`, { page });
-  const { favorites, toggleFavorite } = useUserContext();
+  const { favorites, toggleFavorite, cart, removeFromCart } = useUserContext();
   const { calculatePrice } = usePricing();
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
@@ -40,7 +40,16 @@ export const MoviesView = () => {
       ) : (
         <>
           <ImageGrid onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} results={gridData}>
-            {(item) => <FavoritesOverlay favorites={favorites} item={item} media="movie" toggleFavorite={toggleFavorite} />}
+            {(item) => (
+              <FavoritesOverlay
+                cart={cart}
+                favorites={favorites}
+                item={item}
+                media="movie"
+                removeFromCart={removeFromCart}
+                toggleFavorite={toggleFavorite}
+              />
+            )}
           </ImageGrid>
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
