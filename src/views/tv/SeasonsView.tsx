@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ImageGrid } from "@/components";
+import { CartOverlay, FavoritesOverlay, ImageGrid } from "@/components";
 import { getImageUrl, type ImageCell, TV_ENDPOINT, type TvDetailsResponse } from "@/core";
-import { useTmdb } from "@/hooks";
+import { usePricing, useTmdb, useUserContext } from "@/hooks";
 
 export const SeasonsView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { calculatePrice, formatPrice } = usePricing();
+  const { favorites, toggleFavorite, cart, addToCart, removeFromCart } = useUserContext();
 
   const { data } = useTmdb<TvDetailsResponse>(`${TV_ENDPOINT}/${id ?? ""}`, {});
 
@@ -15,7 +17,7 @@ export const SeasonsView = () => {
     id: season.id,
     imageUrl: getImageUrl(season.poster_path ?? ""),
     primaryText: `Season ${season.season_number}`,
-    secondaryText: season.air_date || "Date TBA",
+    secondaryText: formatPrice(calculatePrice(data?.first_air_date || "")),
   }));
 
   return (
@@ -31,7 +33,14 @@ export const SeasonsView = () => {
             if (season && season.season_number > 0) navigate(`/tv/${data.id}/season/${season.season_number}`);
           }}
           results={gridData}
-        />
+        >
+          {(item) => (
+            <>
+              <FavoritesOverlay favorites={favorites} item={item} media="tv" toggleFavorite={toggleFavorite} />
+              <CartOverlay addToCart={addToCart} cart={cart} item={item} media="tv" removeFromCart={removeFromCart} />
+            </>
+          )}
+        </ImageGrid>
       )}
     </div>
   );

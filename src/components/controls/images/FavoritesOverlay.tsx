@@ -15,7 +15,7 @@ export const FavoritesOverlay = ({ item, favorites, toggleFavorite, media }: Fav
       event.stopPropagation();
       const favoriteItem = {
         ...item,
-        media, // Use the media prop from parent
+        media, 
       };
       toggleFavorite(favoriteItem);
     }}

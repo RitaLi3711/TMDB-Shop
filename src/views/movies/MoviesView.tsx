@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ButtonGroup, FavoritesOverlay, ImageGrid, Pagination } from "@/components";
 import { getImageUrl, type ImageCell, MOVIE_ENDPOINT, type MoviesResponse } from "@/core";
-import { useTmdb, useUserContext } from "@/hooks";
+import { usePricing, useTmdb, useUserContext } from "@/hooks";
 
 export const MoviesView = () => {
   const { interval } = useParams();
@@ -11,11 +11,13 @@ export const MoviesView = () => {
   const category = interval ?? "now_playing";
   const { data } = useTmdb<MoviesResponse>(`${MOVIE_ENDPOINT}/${category}`, { page });
   const { favorites, toggleFavorite } = useUserContext();
+  const { calculatePrice } = usePricing();
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
     imageUrl: getImageUrl(result.poster_path ?? ""),
     primaryText: result.original_title || "",
+    secondaryText: `$${calculatePrice(result.release_date)}`,
   }));
 
   return (
@@ -38,7 +40,7 @@ export const MoviesView = () => {
       ) : (
         <>
           <ImageGrid onClick={(image: ImageCell) => navigate(`/movie/${image.id}`)} results={gridData}>
-            {(item) => <FavoritesOverlay favorites={favorites} item={item} toggleFavorite={toggleFavorite} />}
+            {(item) => <FavoritesOverlay favorites={favorites} item={item} media="movie" toggleFavorite={toggleFavorite} />}
           </ImageGrid>
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>

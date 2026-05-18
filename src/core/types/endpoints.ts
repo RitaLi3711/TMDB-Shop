@@ -42,7 +42,7 @@ export type GenreResponse = {
 export type MovieResponse = {
   id: number;
   title: string;
-  tagline: string; // Add this line
+  tagline: string;
   overview: string;
   poster_path: string;
   backdrop_path: string;
@@ -71,6 +71,7 @@ export type MoviesResponse = {
     id: number;
     original_title: string;
     poster_path: string;
+    release_date: string;
   }>;
   total_pages: number;
 };

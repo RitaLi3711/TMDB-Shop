@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ButtonGroup, FavoritesOverlay, ImageGrid, Pagination } from "@/components";
+import { ButtonGroup, ImageGrid, Pagination } from "@/components";
 import { getImageUrl, type ImageCell, type TelevisionResponse, TV_ENDPOINT } from "@/core";
-import { useTmdb, useUserContext } from "@/hooks";
+import { useTmdb } from "@/hooks";
 
 export const TelevisionView = () => {
   const { interval } = useParams();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const category = interval ?? "airing_today";
-  const { favorites, toggleFavorite } = useUserContext();
 
   const { data } = useTmdb<TelevisionResponse>(`${TV_ENDPOINT}/${category}`, { page });
 
@@ -38,9 +37,7 @@ export const TelevisionView = () => {
         <p className="text-center text-gray-400">Loading...</p>
       ) : (
         <>
-          <ImageGrid onClick={(image: ImageCell) => navigate(`/tv/${image.id}`)} results={gridData}>
-            {(item) => <FavoritesOverlay favorites={favorites} item={item} media="tv" toggleFavorite={toggleFavorite} />}
-          </ImageGrid>
+          <ImageGrid onClick={(image: ImageCell) => navigate(`/tv/${image.id}`)} results={gridData} />
           <Pagination maxPages={data.total_pages} onClick={setPage} page={page} />
         </>
       )}
