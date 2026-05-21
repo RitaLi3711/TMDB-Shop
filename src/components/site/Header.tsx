@@ -13,7 +13,7 @@ export const Header = () => {
   const location = useLocation();
   const [query, setQuery] = useState<string>("");
   const [type, setType] = useState<SearchType>("movie");
-  const { userName, favorites } = useUserContext();
+  const { userName, favorites, cart } = useUserContext();
 
   if (location.pathname === "/") {
     return null;
@@ -21,7 +21,6 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 border-[#344966] border-b bg-[#0d1821]">
-      {/* Top row - Main navigation */}
       <div className="flex items-center justify-between gap-20 px-4 pt-4">
         <div className="flex items-center gap-4">
           <h1 className="cursor-pointer font-bold text-4xl text-[#f0f4ef]" onClick={() => navigate("/")}>
@@ -68,13 +67,19 @@ export const Header = () => {
           <button className="relative rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/favorites")}>
             <FaRegHeart color="#f0f4ef" size={ICON_SIZE} />
             {favorites.size > 0 && (
-              <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] text-white">
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#BFCC94] font-bold text-[#0D1821] text-[10px]">
                 {favorites.size}
               </span>
             )}
           </button>
+
           <button className="relative rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/cart")}>
             <PiShoppingCartSimple color="#f0f4ef" size={ICON_SIZE} />
+            {cart.size > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#BFCC94] font-bold text-[#0D1821] text-[10px]">
+                {cart.size}
+              </span>
+            )}
           </button>
           <button className="rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/user")}>
             <GoGear color="#f0f4ef" size={ICON_SIZE} />

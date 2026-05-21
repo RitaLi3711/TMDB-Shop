@@ -3,7 +3,7 @@ import type { ImageCell } from "@/core";
 import { useUserContext } from "@/hooks";
 
 export const CartView = () => {
-  const { cart, removeFromCart, favorites, toggleFavorite } = useUserContext();
+  const { cart, removeFromCart, favorites, toggleFavorite, clearCart } = useUserContext();
 
   const items = Array.from(cart.values());
   const ITEM_PRICE = 19.99;
@@ -12,17 +12,15 @@ export const CartView = () => {
   const taxes = subtotal * 0.13;
   const total = subtotal + taxes;
 
-  const handleEmptyCart = () => {
-    items.forEach((item) => {
-      removeFromCart(item.id);
-    });
-  };
-
   const handleMoveToFavorites = (item: ImageCell) => {
     removeFromCart(item.id);
     if (!favorites.has(item.id)) {
       toggleFavorite(item);
     }
+  };
+
+  const handleEmptyCart = () => {
+    clearCart();
   };
 
   return (

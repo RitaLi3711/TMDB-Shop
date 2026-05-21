@@ -45,11 +45,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     setCartStorage(Array.from(map.entries()));
   };
 
+  const clearCart = () => {
+    setCartStorage([]);
+  };
+
   return (
     <UserContext.Provider
       value={{
         addToCart,
         cart,
+        clearCart,
         favorites,
         moviePreferences,
         removeFromCart,

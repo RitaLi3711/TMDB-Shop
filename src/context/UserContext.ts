@@ -13,5 +13,6 @@ export type UserContextType = {
   toggleFavorite: (item: ImageCell) => void;
   addToCart: (item: ImageCell) => void;
   removeFromCart: (id: number) => void;
+  clearCart: () => void;
 };
 export const UserContext = createContext<UserContextType | undefined>(undefined);
