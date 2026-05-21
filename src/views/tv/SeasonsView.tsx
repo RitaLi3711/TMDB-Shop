@@ -35,7 +35,7 @@ export const SeasonsView = () => {
           results={gridData}
         >
           {(item) => (
-            <>
+            <div className="absolute top-1 right-1 left-1 z-10 flex justify-between">
               <FavoritesOverlay
                 cart={cart}
                 favorites={favorites}
@@ -53,7 +53,7 @@ export const SeasonsView = () => {
                 removeFromCart={removeFromCart}
                 toggleFavorite={toggleFavorite}
               />
-            </>
+            </div>
           )}
         </ImageGrid>
       )}

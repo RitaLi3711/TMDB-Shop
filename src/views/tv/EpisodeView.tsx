@@ -2,11 +2,12 @@ import { FaArrowLeft, FaCalendarAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, ImageGrid } from "@/components";
 import { getImageUrl, type ImageCell, type SeasonData, TV_ENDPOINT } from "@/core";
-import { useTmdb } from "@/hooks";
+import { usePricing, useTmdb } from "@/hooks";
 
 export const EpisodeView = () => {
   const { id, seasonNumber } = useParams();
   const navigate = useNavigate();
+  const { calculatePrice, formatPrice } = usePricing();
 
   const { data } = useTmdb<SeasonData>(`${TV_ENDPOINT}/${id ?? ""}/season/${seasonNumber ?? ""}`, {});
 
@@ -31,7 +32,10 @@ export const EpisodeView = () => {
       ) : (
         <>
           <div className="mb-8">
-            <h1 className="mb-2 font-bold text-3xl">Season {seasonNumber}</h1>
+            <div className="mb-2 flex items-center justify-between">
+              <h1 className="font-bold text-3xl">Season {seasonNumber}</h1>
+              <h4 className="font-bold text-2xl text-blue-400">{data && formatPrice(calculatePrice(data.air_date))}</h4>
+            </div>
             <div className="flex items-center gap-2 text-gray-400">
               <FaCalendarAlt />
               <span>{data.air_date || "Date TBA"}</span>
