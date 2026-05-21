@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ButtonGroup, FavoritesOverlay, ImageGrid } from "@/components";
 import { getImageUrl, type ImageCell, TRENDING_ENDPOINT, type TrendingResponse } from "@/core";
-import { useTmdb, useUserContext } from "@/hooks";
+import { usePricing, useTmdb, useUserContext } from "@/hooks";
 
 export const TrendingView = () => {
   const navigate = useNavigate();
@@ -10,6 +10,8 @@ export const TrendingView = () => {
   const [type, setType] = useState<"movies" | "tv">("movies");
   const [timeWindow, setTimeWindow] = useState<"day" | "week">((searchParams.get("interval") as "day" | "week") || "day");
   const { favorites, toggleFavorite } = useUserContext();
+    const { calculatePrice } = usePricing();
+  
 
   useEffect(() => {
     navigate(`/trending/${type}?interval=${timeWindow}`, { replace: true });
@@ -20,7 +22,9 @@ export const TrendingView = () => {
   const gridData: ImageCell[] = (data?.results ?? []).slice(0, 20).map((item) => ({
     id: item.id,
     imageUrl: getImageUrl(item.poster_path ?? ""),
-    primaryText: item.title || item.name || "",
+    primaryText: item.title || item.name || "",\
+    secondaryText: `$${calculatePrice(result.release_date)}`,
+
   }));
 
   return (
