@@ -5,7 +5,7 @@ import { useUserContext } from "@/hooks";
 
 export const FavoritesView = () => {
   const navigate = useNavigate();
-  const { favorites, toggleFavorite } = useUserContext();
+  const { favorites, toggleFavorite, cart, removeFromCart } = useUserContext();
   const [type, setType] = useState<"movie" | "tv">("movie");
 
   const items = Array.from(favorites.values());
@@ -30,9 +30,20 @@ export const FavoritesView = () => {
       <h2 className="font-semibold text-2xl">{type === "movie" ? "Movies" : "TV Shows"}</h2>
 
       {filtered.length !== 0 ? (
-        <ImageGrid onClick={(id) => navigate(`/${type}/${id}/credits`)} results={filtered}>
-          {(item) => <FavoritesOverlay favorites={favorites} item={item} media={type} toggleFavorite={toggleFavorite} />}
-        </ImageGrid>
+<ImageGrid onClick={(item) => navigate(`/${type}/${item.id}/summary`)} results={filtered}>
+  {(item) => (
+    <>
+      <FavoritesOverlay
+        cart={cart}
+        favorites={favorites}
+        item={item}
+        media={type}
+        removeFromCart={removeFromCart}
+        toggleFavorite={toggleFavorite}
+      />
+    </>
+  )}
+</ImageGrid>
       ) : (
         <p className="mt-10 text-center text-gray-400">
           {type === "movie" ? "You have no favorite movies yet." : "You have no favorite TV shows yet."}

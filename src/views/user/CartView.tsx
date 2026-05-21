@@ -1,4 +1,5 @@
 import { FaHeart, FaRegHeart, FaRegTrashAlt } from "react-icons/fa";
+import type { ImageCell } from "@/core";
 import { useUserContext } from "@/hooks";
 
 export const CartView = () => {
@@ -17,7 +18,7 @@ export const CartView = () => {
     });
   };
 
-  const handleMoveToFavorites = (item: any) => {
+  const handleMoveToFavorites = (item: ImageCell) => {
     removeFromCart(item.id);
     if (!favorites.has(item.id)) {
       toggleFavorite(item);

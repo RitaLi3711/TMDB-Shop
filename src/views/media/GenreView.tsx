@@ -9,7 +9,7 @@ export const GenreView = () => {
   const { type: urlType = "movies", genreSlug = "action" } = useParams();
   const [type, setType] = useState<"movies" | "tv">(urlType as "movies" | "tv");
   const [page, setPage] = useState(1);
-  const { favorites, toggleFavorite, moviePreferences, tvPreferences } = useUserContext();
+  const { favorites, toggleFavorite, moviePreferences, tvPreferences, cart, removeFromCart } = useUserContext();
 
   const genres =
     type === "movies"
@@ -65,9 +65,11 @@ export const GenreView = () => {
           <ImageGrid onClick={(image: ImageCell) => navigate(`/${type === "movies" ? "movie" : "tv"}/${image.id}`)} results={gridData}>
             {(item) => (
               <FavoritesOverlay
+                cart={cart}
                 favorites={favorites}
                 item={item}
                 media={type === "movies" ? "movie" : "tv"}
+                removeFromCart={removeFromCart}
                 toggleFavorite={toggleFavorite}
               />
             )}
