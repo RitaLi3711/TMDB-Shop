@@ -17,7 +17,7 @@ export const SeasonsView = () => {
     id: season.id,
     imageUrl: getImageUrl(season.poster_path ?? ""),
     primaryText: `Season ${season.season_number}`,
-    secondaryText: formatPrice(calculatePrice(data?.first_air_date || "")),
+    secondaryText: formatPrice(calculatePrice(season.air_date || "")),
   }));
 
   return (
